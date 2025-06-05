@@ -3,6 +3,7 @@ import img_product from "../../assets/img_product.jpg";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import Modal from "react-modal";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const customStyles = {
   overlay: {
@@ -21,6 +22,7 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 export default function CardProductAdmin() {
+  const notify = () => toast.error("Não é possível excluir este produto!");
   const navigate = useNavigate();
 
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -50,6 +52,7 @@ export default function CardProductAdmin() {
           <AiOutlineDelete onClick={openModal} />
         </div>
       </div>
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setIsOpen(false)}
@@ -70,6 +73,7 @@ export default function CardProductAdmin() {
             onClick={() => {
               console.log("Produto excluído");
               setIsOpen(false);
+              notify();
             }}
             className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-200"
           >

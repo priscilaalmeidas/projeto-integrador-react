@@ -8,6 +8,12 @@ import { FiTool } from "react-icons/fi";
 import { TiGift } from "react-icons/ti";
 import { RiMore2Fill } from "react-icons/ri";
 import banner from "../../assets/banner.png";
+import { getApiRecentProducts, getApiRecommendedProducts } from "./services";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { Products } from "./types";
+import ListLoading from "../../components/list-loading";
+import { Link, useNavigate } from "react-router-dom";
 
 const itemsCategory = [
   {
@@ -46,7 +52,52 @@ const itemsCategory = [
     icon: <RiMore2Fill />,
   },
 ];
+
 export default function Home() {
+  const notify = (message: string) => toast(message);
+  const navigate = useNavigate();
+  const [recentProducts, setRecentProducts] = useState<Products[]>([]);
+  const [recommendedProducts, setRecommendedProducts] = useState<Products[]>(
+    []
+  );
+  const [inputSearch, setInputSearch] = useState("");
+  const [isLoadingRecentsProducts, setIsLoadingRecentsProducts] =
+    useState(false);
+  const [isLoadingRecommendedProducts, setIsLoadingRecommendedProducts] =
+    useState(false);
+
+  async function getRecentsProducts() {
+    setIsLoadingRecentsProducts(true);
+    try {
+      const response = await getApiRecentProducts();
+      setRecentProducts(response.data);
+    } catch (error) {
+      console.error("Failed to fetch recent products:", error);
+      notify("Erro ao buscar produtos recentes");
+    }
+    setIsLoadingRecentsProducts(false);
+  }
+
+  async function getRecommendedProducts() {
+    setIsLoadingRecommendedProducts(true);
+    try {
+      const response = await getApiRecommendedProducts();
+      setRecommendedProducts(response.data);
+    } catch (error) {
+      console.error("Failed to fetch recent products:", error);
+      notify("Erro ao buscar produtos recentes");
+    }
+    setIsLoadingRecommendedProducts(false);
+  }
+
+  useEffect(() => {
+    getRecentsProducts();
+  }, []);
+
+  useEffect(() => {
+    getRecommendedProducts();
+  }, []);
+
   return (
     <UserTemplate>
       <div className="flex flex-col items-center">
@@ -65,22 +116,42 @@ export default function Home() {
           <input
             className="flex-1 h-full p-3"
             placeholder="Estou procurando por..."
+            onChange={(e) => setInputSearch(e.target.value)}
+            value={inputSearch}
           />
-          <IoSearch className="mx-2" color="gray" size={20} />
+          <button onClick={() => navigate(`/products/search/${inputSearch}`)}>
+            <IoSearch className="mx-2" color="gray" size={20} />
+          </button>
         </div>
       </div>
       <div className="flex flex-1 flex-col mt-5">
         <div className="mb-8 ">
           <h2 className="w-full mt-2 text-2xl mb-4">Itens Recentes</h2>
-          <div className="flex flex-wrap justify-center items-center gap-4">
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
+          {isLoadingRecentsProducts && <ListLoading />}
+          {!isLoadingRecentsProducts && recentProducts.length === 0 && (
+            <p className="text-center text-gray-500">
+              Nenhum produto recente encontrado.
+            </p>
+          )}
+          <div className="flex flex-wrap justify-center ">
+            {recentProducts.map((product) => (
+              <CardProduct
+                key={product._id}
+                id={product._id}
+                name={product.name}
+                price={product.price}
+                image={product.url1}
+                manufacturer={product.manufacturer}
+              />
+            ))}
           </div>
-          <p className="text-right text-lg m-8">Ver mais</p>
+          <Link to="/all-recent-products">
+            <p className="text-right text-mg mt-8 cursor-pointer text-blue-600 hover:text-blue-800">
+              Ver mais
+            </p>
+          </Link>
         </div>
-        <div className="bg-blue-900 rounded-2xl w-full  p-4 mb-8 max-w-sm md:max-w-4xl mx-auto">
+        <div className="bg-blue-900 rounded-2xl w-full  p-4 mb-8 ">
           <h2 className="w-full text-white mt-2 text-xl px-3 mb-4">
             Categorias
           </h2>
@@ -95,24 +166,32 @@ export default function Home() {
             ))}
           </div>
         </div>
-        {/* <div>
-          <div className="flex flex-wrap justify-center items-center gap-4">
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
-          </div>
-          <p className="text-right text-lg m-8">Ver mais</p>
-        </div> */}
         <div className="mb-8">
           <h2 className="w-full mt-2  text-2xl  mb-4">Anúncios</h2>
-          <div className="flex flex-wrap justify-center items-center gap-4">
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
+          {isLoadingRecommendedProducts && <ListLoading />}
+          {!isLoadingRecommendedProducts &&
+            recommendedProducts.length === 0 && (
+              <p className="text-center text-gray-500">
+                Nenhum produto recomendado encontrado.
+              </p>
+            )}
+          <div className="flex flex-wrap justify-center gap-4">
+            {recommendedProducts.map((product) => (
+              <CardProduct
+                key={product._id}
+                id={product._id}
+                name={product.name}
+                price={product.price}
+                image={product.url1}
+                manufacturer={product.manufacturer}
+              />
+            ))}
           </div>
-          <p className="text-right text-lg m-8">Ver mais</p>
+          <Link to="/all-products">
+            <p className="text-right text-mg mt-8 cursor-pointer text-blue-600 hover:text-blue-800">
+              Ver mais
+            </p>
+          </Link>
         </div>
       </div>
     </UserTemplate>

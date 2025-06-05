@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Home from "./pages/home";
-import ListProducts from "./pages/list-products";
+import ListRecentProducts from "./pages/list-recent-products";
 import Details from "./pages/details";
 import SearchProducts from "./pages/search-result";
 import NotFound from "./pages/not-found";
@@ -12,6 +12,7 @@ import ContactUs from "./pages/contact-us";
 import Dashboard from "./pages/dashboard";
 import UserProducts from "./pages/user-products";
 import FormProducts from "./pages/form-products";
+import ListAllProducts from "./pages/list-all-products";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -24,15 +25,19 @@ export default function App() {
       element: <About />,
     },
     {
-      path: "/products",
-      element: <ListProducts />,
+      path: "/all-recent-products",
+      element: <ListRecentProducts />,
     },
     {
-      path: "/products/details",
+      path: "/all-products",
+      element: <ListAllProducts />,
+    },
+    {
+      path: "/products/details/:id",
       element: <Details />,
     },
     {
-      path: "/products/search",
+      path: "/products/search/:product",
       element: <SearchProducts />,
     },
     {
