@@ -1,21 +1,30 @@
+import { Link, useNavigate } from "react-router-dom";
+
 export default function Header() {
+  const navigate = useNavigate();
+
   return (
     <header className="bg-blue-950 text-white flex justify-between items-center p-4">
-      <h1 className="text-3xl ">My App</h1>
+      <button onClick={() => navigate("/")}>
+        <h1 className="text-xl pl-4 cursor-pointer">My App Unyleya</h1>
+      </button>
       <nav>
-        <ul className="flex space-x-4 items-center">
+        <ul className="flex space-x-4 items-center ">
           <li>
-            <a href="/" className="hover:underline">
+            <Link to="/" className="hover:underline">
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/about" className="hover:underline">
+            <Link to="/about" className="hover:underline">
               Quem Somos
-            </a>
+            </Link>
           </li>
           <li>
-            <button className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <button
+              onClick={() => navigate("/login")}
+              className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+            >
               Entrar
             </button>
           </li>

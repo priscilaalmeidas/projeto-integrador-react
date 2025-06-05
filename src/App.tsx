@@ -6,6 +6,12 @@ import Details from "./pages/details";
 import SearchProducts from "./pages/search-result";
 import NotFound from "./pages/not-found";
 import About from "./pages/about";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import ContactUs from "./pages/contact-us";
+import Dashboard from "./pages/dashboard";
+import UserProducts from "./pages/user-products";
+import FormProducts from "./pages/form-products";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -28,6 +34,30 @@ export default function App() {
     {
       path: "/products/search",
       element: <SearchProducts />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/contact-us",
+      element: <ContactUs />,
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
+    },
+    {
+      path: "/my-products",
+      element: <UserProducts />,
+    },
+    {
+      path: "/form-products",
+      element: <FormProducts />,
     },
     {
       path: "*",

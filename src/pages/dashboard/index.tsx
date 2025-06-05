@@ -1,5 +1,4 @@
 import CardProduct from "../../components/card-product";
-import UserTemplate from "../../templates/user-template";
 import { Carousel } from "react-responsive-carousel";
 import { GrGamepad } from "react-icons/gr";
 import { PiTShirt } from "react-icons/pi";
@@ -8,6 +7,7 @@ import { FiTool } from "react-icons/fi";
 import { TiGift } from "react-icons/ti";
 import { RiMore2Fill } from "react-icons/ri";
 import banner from "../../assets/banner.png";
+import AdminTemplate from "../../templates/admin-template";
 
 const itemsCategory = [
   {
@@ -46,9 +46,9 @@ const itemsCategory = [
     icon: <RiMore2Fill />,
   },
 ];
-export default function Home() {
+export default function Dashboard() {
   return (
-    <UserTemplate>
+    <AdminTemplate>
       <div className="flex flex-col items-center">
         <Carousel showThumbs={false}>
           <div>
@@ -95,15 +95,6 @@ export default function Home() {
             ))}
           </div>
         </div>
-        {/* <div>
-          <div className="flex flex-wrap justify-center items-center gap-4">
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
-          </div>
-          <p className="text-right text-lg m-8">Ver mais</p>
-        </div> */}
         <div className="mb-8">
           <h2 className="w-full mt-2  text-2xl  mb-4">Anúncios</h2>
           <div className="flex flex-wrap justify-center items-center gap-4">
@@ -115,6 +106,6 @@ export default function Home() {
           <p className="text-right text-lg m-8">Ver mais</p>
         </div>
       </div>
-    </UserTemplate>
+    </AdminTemplate>
   );
 }
